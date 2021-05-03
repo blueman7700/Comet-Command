@@ -503,6 +503,7 @@ GameObject:
   - component: {fileID: 4980453709797261661}
   - component: {fileID: 2261170418365729436}
   - component: {fileID: 1849942178376257999}
+  - component: {fileID: -9119638678312323546}
   m_Layer: 0
   m_Name: City
   m_TagString: Building
@@ -580,6 +581,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.690176, y: 0.9803295}
   m_EdgeRadius: 0
+--- !u!114 &-9119638678312323546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4886890714550750053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcaaefa19c74d0a4a920ef8c086b3094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5253411779707325618
 GameObject:
   m_ObjectHideFlags: 0

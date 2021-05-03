@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 7647454117568246779}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.45, y: 1.92, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 86d6f87748d905d4191239e399e75ff6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7028302, g: 0.8582973, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -98,8 +98,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites: []
-  speed: 3
+  speed: 1
   explosionAnim: {fileID: 5498317046901316375, guid: b509be080cd83974a8e343a850b2d163, type: 3}
+  cometDestroyedPoints: 25
 --- !u!50 &2031601006133035087
 Rigidbody2D:
   serializedVersion: 4

@@ -52,11 +52,13 @@ public class CometBehaviour : MonoBehaviour
         {
             //TODO: switch this over to something better in the future...
             Destroy(collision.gameObject);
+            mGameController.HandleCometDestroyed();
             Explode();
         }
         else if (collision.tag == "Explosion")
         {
             mGameController.AddScorePoints(cometDestroyedPoints);
+            mGameController.HandleCometDestroyed();
             Explode();
         }
     }

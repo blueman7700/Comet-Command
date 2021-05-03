@@ -45,6 +45,7 @@ public class GameController : MonoBehaviour
     private int missileMagazineSize = 10;
     private int cityCount;
     private int bonusMultiplier;
+    private AudioManager mAudioManager;
 
     public int Score { get; private set; }
     public int RoundNumber { get; private set; }
@@ -62,6 +63,8 @@ public class GameController : MonoBehaviour
         Cursor.SetCursor(cursor, cursorHotspot, CursorMode.Auto);
 
         mCometController = FindObjectOfType<CometControl>();
+        mAudioManager = FindObjectOfType<AudioManager>();
+
         cityCount = FindObjectsOfType<CityBehaviour>().Length;
 
         MissilesRemaining = startMissileNum;
@@ -180,7 +183,11 @@ public class GameController : MonoBehaviour
     /// <returns></returns>
     public bool PlayerCanShoot()
     {
-        return (numMissilesInLauncher > 0) && roundActive;
+        if ((numMissilesInLauncher > 0) && roundActive)
+        {
+            return true;
+        }
+        return false;
     }
 
     /// <summary>

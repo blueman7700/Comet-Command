@@ -13,15 +13,18 @@ public class MissileBehaviour : MonoBehaviour
     private Vector2 target;
     private Mouse mouse;
     private Rigidbody2D rb;
+    private AudioSource fx;
 
     private void Start()
     {
         mouse = Mouse.current;
         target = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
         rb = this.GetComponent<Rigidbody2D>();
+        fx = GetComponent<AudioSource>();
         Vector2 lookDir = target - rb.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
         rb.rotation = angle - 90f;
+        fx.Play();
     }
 
     private void Update()

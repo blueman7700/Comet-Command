@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Texture2D cursor;
     [SerializeField] private int startMissileNum;
     [SerializeField] private int startCometNum;
+    [SerializeField] private float difficultyScalingFactor;
     [SerializeField] private TextMeshProUGUI mScoreText;
     [SerializeField] private TextMeshProUGUI mRoundText;
     [SerializeField] private TextMeshProUGUI mCometText;
@@ -19,6 +20,7 @@ public class GameController : MonoBehaviour
     private static string MISSILE_TEXT = "Missiles:\n{0}/{1}";
 
     private Vector2 cursorHotspot;
+    private CometControl mCometController;
 
     public int Score { get; private set; }
     public int RoundNumber { get; private set; }
@@ -31,11 +33,14 @@ public class GameController : MonoBehaviour
         cursorHotspot = new Vector2(cursor.width / 2f, cursor.height / 2f);
         Cursor.SetCursor(cursor, cursorHotspot, CursorMode.Auto);
 
+        mCometController = FindObjectOfType<CometControl>();
+
         MissilesRemaining = startMissileNum;
         CometsRemainingInRound = startCometNum;
         Score = 0;
         RoundNumber = 0;
 
+        StartRound();
         UpdateUI();
     }
 
@@ -53,28 +58,44 @@ public class GameController : MonoBehaviour
         mMissileText.text = string.Format(MISSILE_TEXT, MissilesRemaining, startMissileNum);
     }
 
+    private void StartRound()
+    {
+        RoundNumber++;
 
-    public bool canSpawnComet()
+        CometsRemainingInRound = startCometNum;
+        MissilesRemaining = startMissileNum;
+
+        mCometController.BeginSpawning(CometsRemainingInRound);
+    }
+
+
+    public bool CanSpawnComet()
     {
         return CometsRemainingInRound > 0;
     }
 
-    public void handleCometSpawn()
+    public void HandleCometSpawn()
     {
         CometsRemainingInRound--;
-        //TODO: handle new level shit.....
+        //TODO: handle new level and scoring...
         UpdateUI();
     }
 
-    public bool playerCanShoot()
+    public bool PlayerCanShoot()
     {
         return MissilesRemaining > 0;
     }
 
-    public void handlePlayerShot()
+    public void HandlePlayerShot()
     {
         MissilesRemaining--;
         //TODO: handle reloading or smth...
+        UpdateUI();
+    }
+
+    public void AddScorePoints(int pointsToAdd)
+    {
+        Score += pointsToAdd;
         UpdateUI();
     }
 }

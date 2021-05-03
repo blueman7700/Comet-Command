@@ -41,11 +41,11 @@ public class PlayerController : MonoBehaviour
     {
         if(context.performed) {
 
-            if (mGameController.playerCanShoot())
+            if (mGameController.PlayerCanShoot())
             {
                 mousePos = cam.ScreenToWorldPoint(mouse.position.ReadValue());
                 Shoot();
-                mGameController.handlePlayerShot();
+                mGameController.HandlePlayerShot();
             }
         }
     }

@@ -10,14 +10,19 @@ public class CometBehaviour : MonoBehaviour
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private float speed;
     [SerializeField] private GameObject explosionAnim;
+    [SerializeField] private int cometDestroyedPoints = 25;
 
     private GameObject[] targets;
     private Vector2 targetPos;
+
+    //TODO: make scoring use event listeners
+    private GameController mGameController;
 
     // Start is called before the first frame update
     void Start()
     {
         sprites = Resources.LoadAll<Sprite>("Sprites/Projectiles");
+        mGameController = FindObjectOfType<GameController>();
 
         //randomly select and flip a sprite to make it look like they are unique
         int textureIndex = Random.Range(0, sprites.Length - 1);
@@ -47,11 +52,11 @@ public class CometBehaviour : MonoBehaviour
         {
             //TODO: switch this over to something better in the future...
             Destroy(collision.gameObject);
-
             Explode();
         }
         else if (collision.tag == "Explosion")
         {
+            mGameController.AddScorePoints(cometDestroyedPoints);
             Explode();
         }
     }

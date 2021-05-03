@@ -8,12 +8,12 @@ public class CometBehaviour : MonoBehaviour
 {
 
     [SerializeField] private Sprite[] sprites;
-    [SerializeField] private float speed;
     [SerializeField] private GameObject explosionAnim;
     [SerializeField] private int cometDestroyedPoints = 25;
 
     private GameObject[] targets;
     private Vector2 targetPos;
+    private float speed;
 
     //TODO: make scoring use event listeners
     private GameController mGameController;
@@ -39,6 +39,7 @@ public class CometBehaviour : MonoBehaviour
         targets = GameObject.FindGameObjectsWithTag("Building");
         int targetIndex = Random.Range(0, targets.Length);
         targetPos = targets[targetIndex].transform.position;
+        speed = mGameController.CometSpeed;
     }
 
     private void Update()

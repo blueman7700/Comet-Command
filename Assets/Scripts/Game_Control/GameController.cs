@@ -32,11 +32,14 @@ public class GameController : MonoBehaviour
     private CometControl mCometController;
     private int cometsAlive;
     private bool roundActive = false;
+    
 
     public int Score { get; private set; }
     public int RoundNumber { get; private set; }
     public int MissilesRemaining { get; private set; }
     public int CometsRemainingInRound { get; private set; }
+    public float CometSpeed { get; private set; }
+
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +53,7 @@ public class GameController : MonoBehaviour
         CometsRemainingInRound = startCometNum;
         Score = 0;
         RoundNumber = 0;
+        CometSpeed = 1f;
 
         StartRound();
     }
@@ -129,6 +133,8 @@ public class GameController : MonoBehaviour
     {
         endOfRoundPanel.SetActive(false);
         //TODO: calculate new round params
+
+        cometSpeed *= difficultyScalingFactor;
 
         StartRound();
     }

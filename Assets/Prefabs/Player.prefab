@@ -941,10 +941,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3877050190849612553}
-  - component: {fileID: 729415081}
   - component: {fileID: 729415082}
-  - component: {fileID: 729415080}
-  - component: {fileID: 729415084}
+  - component: {fileID: 729415081}
+  - component: {fileID: 3881747730252218000}
+  - component: {fileID: 4560718722715145209}
   m_Layer: 0
   m_Name: Player
   m_TagString: Building
@@ -980,27 +980,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &729415081
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7225801585522509486}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &729415082
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1027,7 +1006,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.3479352, y: 1.2584324}
   m_EdgeRadius: 0
---- !u!114 &729415080
+--- !u!50 &729415081
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225801585522509486}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &3881747730252218000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1044,7 +1044,8 @@ MonoBehaviour:
   firePoint: {fileID: 7183207304267525758}
   bulletPrefab: {fileID: 5061868076373649362, guid: b28922a12ce1cca428da75d9653435d5, type: 3}
   shotForce: 0
---- !u!114 &729415084
+  explosionAnim: {fileID: 5498317046901316375, guid: b509be080cd83974a8e343a850b2d163, type: 3}
+--- !u!114 &4560718722715145209
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1075,7 +1076,7 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 729415080}
+      - m_Target: {fileID: 3881747730252218000}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: Look
         m_Mode: 0
@@ -1091,7 +1092,7 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 729415080}
+      - m_Target: {fileID: 3881747730252218000}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: Fire
         m_Mode: 0

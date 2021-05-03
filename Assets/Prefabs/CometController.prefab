@@ -43,7 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57c7e2fcf4c93ed4cb497ca73f58e1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursor: {fileID: 2800000, guid: 1a8497de932060b4e9c9f76220f9c76f, type: 3}
-  cometPrefab: {fileID: 0}
-  numCometsToSpawnInRound: 10
+  cometPrefab: {fileID: 7647454117568246779, guid: 9a9b841e3a0f6d046ad21f4c439f459e, type: 3}
   spawnDelay: 1

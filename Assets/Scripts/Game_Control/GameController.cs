@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -77,7 +78,7 @@ public class GameController : MonoBehaviour
         }
         else if (cityCount <= 0 || playerIsDead)
         {
-            Debug.Log("GAME OVER!!!!");
+            SceneManager.LoadScene("GameOver");
         }
     }
 
@@ -162,7 +163,6 @@ public class GameController : MonoBehaviour
 
     private void PlayerReload()
     {
-
         //TODO make reload delay and animation.
         if (MissilesRemaining < missileMagazineSize)
         {

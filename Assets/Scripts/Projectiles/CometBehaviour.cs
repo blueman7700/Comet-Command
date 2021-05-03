@@ -29,7 +29,7 @@ public class CometBehaviour : MonoBehaviour
         bool flipX = (Random.value > 0.5f);
         bool flipY = (Random.value > 0.5f);
 
-        Debug.Log(textureIndex);
+        //Debug.Log(textureIndex);
 
         SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
         sr.sprite = sprites[textureIndex];
@@ -45,21 +45,31 @@ public class CometBehaviour : MonoBehaviour
     private void Update()
     {
         transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+        if ((Vector2)transform.position == targetPos)
+        {
+            Explode();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Building")
         {
+            Explode();
+
+            if (collision.GetComponent<PlayerController>() != null)
+            {
+                mGameController.PlayerHit();
+                return;
+            }
+
             //TODO: switch this over to something better in the future...
             Destroy(collision.gameObject);
-            mGameController.HandleCometDestroyed();
-            Explode();
         }
         else if (collision.tag == "Explosion")
         {
             mGameController.AddScorePoints(cometDestroyedPoints);
-            mGameController.HandleCometDestroyed();
+            
             Explode();
         }
     }
@@ -67,6 +77,7 @@ public class CometBehaviour : MonoBehaviour
     private void Explode()
     {
         Debug.Log("Collision Detected!");
+        mGameController.HandleCometDestroyed();
         Instantiate(explosionAnim, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }

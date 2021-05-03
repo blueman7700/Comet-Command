@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float shotForce;
+    [SerializeField] private GameObject explosionAnim;
 
     private Vector2 mousePos;
     private Mouse mouse;
@@ -54,5 +55,4 @@ public class PlayerController : MonoBehaviour
     {
         mousePos = cam.ScreenToWorldPoint(mouse.position.ReadValue());
     }
-
 }

@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI mMissileBonus;
     [SerializeField] private TextMeshProUGUI mTotalBonus;
     [SerializeField] private TextMeshProUGUI mTotalScore;
+    [SerializeField] private TextMeshProUGUI mBonusMult;
 
     private static string STRING_TEXT = "Score: {0}";
     private static string ROUND_TEXT = "Round: {0}";
@@ -40,6 +41,7 @@ public class GameController : MonoBehaviour
     private int numMissilesInLauncher;
     private int missileMagazineSize = 10;
     private int cityCount;
+    private int bonusMultiplier;
     
 
     public int Score { get; private set; }
@@ -99,6 +101,33 @@ public class GameController : MonoBehaviour
         CometsRemainingInRound = startCometNum;
         cometsAlive = CometsRemainingInRound;
         MissilesRemaining = startMissileNum;
+
+
+        if (RoundNumber < 3)
+        {
+            bonusMultiplier = 1;
+        }
+        else if (RoundNumber >= 3 && RoundNumber < 5)
+        {
+            bonusMultiplier = 2;
+        }
+        else if (RoundNumber >= 5 && RoundNumber < 7)
+        {
+            bonusMultiplier = 3;
+        }
+        else if (RoundNumber >= 7 && RoundNumber < 9)
+        {
+            bonusMultiplier = 4;
+        }
+        else if (RoundNumber >= 9 && RoundNumber < 11)
+        {
+            bonusMultiplier = 5;
+        }
+        else if (RoundNumber >= 11)
+        {
+            bonusMultiplier = 6;
+        }
+
 
         roundActive = true;
 
@@ -184,6 +213,7 @@ public class GameController : MonoBehaviour
 
     public void OnClick()
     {
+        Debug.Log("Click!");
         endOfRoundPanel.SetActive(false);
         //TODO: calculate new round params
 
@@ -201,10 +231,13 @@ public class GameController : MonoBehaviour
         int cityBonus = numCitiesAlive * REMAINING_CITIES_BONUS;
         int totalBonus = missileBonus + cityBonus;
 
+        totalBonus *= bonusMultiplier;
+
         Score += totalBonus;
 
         mCityBonus.text = cityBonus.ToString();
         mMissileBonus.text = missileBonus.ToString();
+        mBonusMult.text = "x" + bonusMultiplier;
         mTotalBonus.text = totalBonus.ToString();
         mTotalScore.text = Score.ToString();
     }

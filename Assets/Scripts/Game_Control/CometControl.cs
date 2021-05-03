@@ -9,15 +9,14 @@ public class CometControl : MonoBehaviour
 
 
     private float minX, maxX, yVal;
-    //private GameController mGameController;
+    private GameController mGameController;
     private int numCometsToSpawn;
 
     public float spawnDelay = 1f;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        //mGameController = FindObjectOfType<GameController>();
+        mGameController = FindObjectOfType<GameController>();
 
         //calculate upper and lower x bounds of the screen
         minX = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 1)).x;
@@ -26,7 +25,6 @@ public class CometControl : MonoBehaviour
         //calculate upper y val of screen for spawning
         yVal = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 0)).y;
 
-        //StartCoroutine(SpawnComet());
     }
 
     // Update is called once per frame
@@ -52,7 +50,7 @@ public class CometControl : MonoBehaviour
             Instantiate(cometPrefab, new Vector3(randX, yVal, 0), Quaternion.identity);
 
             //TODO: replace with event call
-            //mGameController.HandleCometSpawn();
+            mGameController.HandleCometSpawn();
             numCometsToSpawn--;
 
             yield return new WaitForSeconds(spawnDelay);

@@ -35,8 +35,10 @@ public class GameController : MonoBehaviour
     private CometControl mCometController;
     private int cometsAlive;
     private bool roundActive = false;
+    private bool playerIsDead = false;
     private int numMissilesInLauncher;
     private int missileMagazineSize = 10;
+    private int cityCount;
     
 
     public int Score { get; private set; }
@@ -53,6 +55,7 @@ public class GameController : MonoBehaviour
         Cursor.SetCursor(cursor, cursorHotspot, CursorMode.Auto);
 
         mCometController = FindObjectOfType<CometControl>();
+        cityCount = FindObjectsOfType<CityBehaviour>().Length;
 
         MissilesRemaining = startMissileNum;
         CometsRemainingInRound = startCometNum;
@@ -60,22 +63,21 @@ public class GameController : MonoBehaviour
         RoundNumber = 0;
         CometSpeed = 1f;
 
-        numMissilesInLauncher = missileMagazineSize;
-
         StartRound();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (roundActive)
+        if (cometsAlive <= 0 && roundActive)
         {
-            if (cometsAlive == 0)
-            {
-                Debug.Log("Round Over!");
-                roundActive = false;
-                StartCoroutine(EndOFRound());
-            }
+            Debug.Log("Round Over!");
+            roundActive = false;
+            StartCoroutine(EndOFRound());
+        }
+        else if (cityCount <= 0 || playerIsDead)
+        {
+            Debug.Log("GAME OVER!!!!");
         }
     }
 
@@ -99,10 +101,9 @@ public class GameController : MonoBehaviour
 
         roundActive = true;
 
-        UpdateUI();
+        PlayerReload();
         mCometController.BeginSpawning(CometsRemainingInRound);
     }
-
 
     public bool CanSpawnComet()
     {
@@ -127,38 +128,51 @@ public class GameController : MonoBehaviour
 
     public void PlayerHit()
     {
-        if (MissilesRemaining >= 0)
+        numMissilesInLauncher = 0;
+        if (MissilesRemaining <= 0)
         {
             MissilesRemaining = 0;
-            //TODO: kill the player and end game
+            if (numMissilesInLauncher <= 0)
+            {
+                playerIsDead = true;
+            }
         }
         else 
         {
-            numMissilesInLauncher = 0;
             //force the controller to reload the launcher.
-            HandlePlayerShot();
+            PlayerReload();
         }   
+    }
+
+    public void CityDestroyed()
+    {
+        cityCount--;
     }
 
     public void HandlePlayerShot()
     {
         numMissilesInLauncher--;
-        Debug.Log("Player Reloaded");
-
-        if (numMissilesInLauncher < 1)
+        if (numMissilesInLauncher <= 0)
         {
-            //TODO make reload delay and animation.
-            if (MissilesRemaining < missileMagazineSize)
-            {
-                numMissilesInLauncher = MissilesRemaining;
-            }
-            else
-            {
-                numMissilesInLauncher = missileMagazineSize;
-                MissilesRemaining -= missileMagazineSize;
-            }
+            PlayerReload();
         }
+        
+        UpdateUI();
+    }
 
+    private void PlayerReload()
+    {
+
+        //TODO make reload delay and animation.
+        if (MissilesRemaining < missileMagazineSize)
+        {
+            numMissilesInLauncher = MissilesRemaining;
+        }
+        else
+        {
+            numMissilesInLauncher = missileMagazineSize;
+            MissilesRemaining -= missileMagazineSize;
+        }
         UpdateUI();
     }
 

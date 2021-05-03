@@ -63,6 +63,7 @@ public class CometBehaviour : MonoBehaviour
                 return;
             }
 
+            mGameController.CityDestroyed();
             //TODO: switch this over to something better in the future...
             Destroy(collision.gameObject);
         }
@@ -76,7 +77,6 @@ public class CometBehaviour : MonoBehaviour
 
     private void Explode()
     {
-        Debug.Log("Collision Detected!");
         mGameController.HandleCometDestroyed();
         Instantiate(explosionAnim, transform.position, Quaternion.identity);
         Destroy(this.gameObject);

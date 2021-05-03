@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 
+/// </summary>
 public class GameController : MonoBehaviour
 {
     [SerializeField] private GameObject endOfRoundPanel;
@@ -42,7 +45,6 @@ public class GameController : MonoBehaviour
     private int missileMagazineSize = 10;
     private int cityCount;
     private int bonusMultiplier;
-    
 
     public int Score { get; private set; }
     public int RoundNumber { get; private set; }
@@ -50,8 +52,10 @@ public class GameController : MonoBehaviour
     public int CometsRemainingInRound { get; private set; }
     public float CometSpeed { get; private set; }
 
-
     // Start is called before the first frame update
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
         cursorHotspot = new Vector2(cursor.width / 2f, cursor.height / 2f);
@@ -70,6 +74,9 @@ public class GameController : MonoBehaviour
     }
 
     // Update is called once per frame
+    /// <summary>
+    /// 
+    /// </summary>
     void Update()
     {
         if (cometsAlive <= 0 && roundActive)
@@ -84,15 +91,21 @@ public class GameController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void UpdateUI()
     {
         mScoreText.text = string.Format(STRING_TEXT, Score);
         mRoundText.text = string.Format(ROUND_TEXT, RoundNumber);
-        mCometText.text = string.Format(COMET_TEXT, CometsRemainingInRound, startCometNum);
+        mCometText.text = string.Format(COMET_TEXT, cometsAlive, startCometNum);
         mMissileText.text = string.Format(MISSILE_TEXT, numMissilesInLauncher, missileMagazineSize);
         mStockpileText.text = string.Format(STOCKPILE_TEXT, MissilesRemaining);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void StartRound()
     {
         endOfRoundPanel.SetActive(false);
@@ -135,27 +148,44 @@ public class GameController : MonoBehaviour
         mCometController.BeginSpawning(CometsRemainingInRound);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public bool CanSpawnComet()
     {
         return CometsRemainingInRound > 0;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void HandleCometSpawn()
     {
         CometsRemainingInRound--;
         UpdateUI();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void HandleCometDestroyed()
     {
         cometsAlive--;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public bool PlayerCanShoot()
     {
         return (numMissilesInLauncher > 0) && roundActive;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void PlayerHit()
     {
         numMissilesInLauncher = 0;
@@ -174,11 +204,17 @@ public class GameController : MonoBehaviour
         }   
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void CityDestroyed()
     {
         cityCount--;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void HandlePlayerShot()
     {
         numMissilesInLauncher--;
@@ -190,6 +226,9 @@ public class GameController : MonoBehaviour
         UpdateUI();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void PlayerReload()
     {
         //TODO make reload delay and animation.
@@ -205,13 +244,20 @@ public class GameController : MonoBehaviour
         UpdateUI();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pointsToAdd"></param>
     public void AddScorePoints(int pointsToAdd)
     {
         Score += pointsToAdd;
         UpdateUI();
     }
 
-    public void OnClick()
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ContinueClick()
     {
         Debug.Log("Click!");
         endOfRoundPanel.SetActive(false);
@@ -222,6 +268,10 @@ public class GameController : MonoBehaviour
         StartRound();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator EndOFRound()
     {
         yield return new WaitForSeconds(1);

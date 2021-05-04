@@ -1043,7 +1043,7 @@ MonoBehaviour:
   rb: {fileID: 729415081}
   firePoint: {fileID: 7183207304267525758}
   bulletPrefab: {fileID: 5061868076373649362, guid: b28922a12ce1cca428da75d9653435d5, type: 3}
-  shotForce: 0
+  missileSpeed: 0
   explosionAnim: {fileID: 5498317046901316375, guid: b509be080cd83974a8e343a850b2d163, type: 3}
 --- !u!114 &4560718722715145209
 MonoBehaviour:
@@ -1075,19 +1075,7 @@ MonoBehaviour:
     m_ActionId: 6bd7aad9-67a5-48b9-a36b-bdc0465e34fa
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3881747730252218000}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Look
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: ee22b284-9907-4ade-842d-7ac7ac0ef05a
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
@@ -1146,6 +1134,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2ef26615-e0a4-4d53-a41b-bab2b9008798
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7225801585522509486}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0589a193-dfd3-4a2b-a1fa-dc929a1c7cc0
+    m_ActionName: UI/Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

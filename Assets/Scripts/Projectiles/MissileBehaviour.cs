@@ -14,9 +14,12 @@ public class MissileBehaviour : MonoBehaviour
     private Mouse mouse;
     private Rigidbody2D rb;
     private AudioSource fx;
+    private PlayerController pc;
 
     private void Start()
     {
+        pc = FindObjectOfType<PlayerController>();
+        speed = pc.MissileSpeed;
         mouse = Mouse.current;
         target = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
         rb = this.GetComponent<Rigidbody2D>();
@@ -34,6 +37,11 @@ public class MissileBehaviour : MonoBehaviour
         {
             Explode();
         }
+    }
+
+    private void Upgrade(Upgrades u)
+    { 
+    
     }
 
     private void Explode() 

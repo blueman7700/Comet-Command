@@ -1,26 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static event Action OnPlayerFire;
+    public static event Action<bool> OnPlayerPause;
+
+    public int MissileSpeed { get; private set; } = 5;
 
     [SerializeField] private Camera cam;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private float shotForce;
+    [SerializeField] private float missileSpeed;
     [SerializeField] private GameObject explosionAnim;
 
-    private Vector2 mousePos;
-    private Mouse mouse;
     private GameController mGameController;
+    private bool pause = false;
 
     public void Start()
     {
-        mouse = Mouse.current;
-        mGameController = FindObjectOfType<GameController>();
+        GameController.OnFireAllowed += Shoot;
+        
+    }
+
+    private void OnDestroy()
+    {
+        GameController.OnFireAllowed -= Shoot;
     }
 
     void Update()
@@ -40,19 +49,14 @@ public class PlayerController : MonoBehaviour
 
     public void Fire(InputAction.CallbackContext context) 
     {
-        if(context.performed) {
-
-            if (mGameController.PlayerCanShoot())
-            {
-                mousePos = cam.ScreenToWorldPoint(mouse.position.ReadValue());
-                Shoot();
-                mGameController.HandlePlayerShot();
-            }
+        if(context.performed && !pause) {
+            OnPlayerFire?.Invoke();
         }
     }
 
-    public void Look(InputAction.CallbackContext context) 
+    public void Pause(InputAction.CallbackContext context)
     {
-        mousePos = cam.ScreenToWorldPoint(mouse.position.ReadValue());
+        pause = !pause;
+        OnPlayerPause?.Invoke(pause);
     }
 }

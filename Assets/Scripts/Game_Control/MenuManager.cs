@@ -11,6 +11,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject savesPanel;
     [SerializeField] private TextMeshProUGUI[] scores;
     [SerializeField] private TextMeshProUGUI[] names;
+    [SerializeField] private TextMeshProUGUI gameOverScore;
 
     [SerializeField] private TextMeshProUGUI slot1Name;
     [SerializeField] private TextMeshProUGUI slot1Score;
@@ -48,12 +49,18 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         entries = new List<LeaderboardEntry>();
+        GameController.OnGameEnd += UpdateGameOverUI;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnDestroy()
+    {
+        GameController.OnGameEnd -= UpdateGameOverUI;
     }
 
     public void StartGame()
@@ -169,6 +176,11 @@ public class MenuManager : MonoBehaviour
             info.UpdateActiveInfo();
         }
         StartGame();
+    }
+
+    public void UpdateGameOverUI(int score)
+    {
+        gameOverScore.text = string.Format(SCORE_TEXT, score);
     }
 
     public void Exit()

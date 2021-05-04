@@ -18,6 +18,12 @@ namespace Assets.Scripts.Structs
         private int roundNumber;
         private int saveSlot;
         private int[] cityPositions;
+        private int money;
+
+        private int missileSpeed;
+        private int missileCount;
+        private float reloadSpeed;
+        private bool hasTargeting = false;
 
         public GameInfo() 
         {
@@ -36,135 +42,116 @@ namespace Assets.Scripts.Structs
             }
         }   
 
-
         private void SetToDefault(string username, int slot)
         {
             this.username = username;
             roundNumber = 0;
             saveSlot = slot;
             score = 0;
+            money = 0;
             cityPositions = new int[] { 0, 1, 2, 3, 4, 5};
             roundSeed = UnityEngine.Random.Range(1000, 10000);
         }
 
         public string Username()
         {
-            if (instance == this)
-            {
-                return username;
-            }
-            else
-            {
-                return instance.username;
-            }
+            return instance.username;
         }
 
         public int RoundNumber() 
         {
-            if (instance == this)
-            {
-                return roundNumber;
-            }
-            else
-            {
-                return instance.roundNumber;
-            }
+            return instance.roundNumber;
+            
         }
 
         public int RoundSeed()
         {
-            if (instance == this)
-            {
-                return roundSeed;
-            }
-            else
-            {
-                return instance.roundSeed;
-            }
+            return instance.roundSeed;
         }
 
         public int Score() 
         {
-            if (instance == this)
-            {
-                return score;
-            }
-            else
-            {
-                return instance.score;
-            }
+            return instance.score;
         }
 
         public int SaveSlot()
         {
-            if (instance == this)
-            {
-                return saveSlot;
-            }
-            else
-            {
-                return instance.saveSlot;
-            }
+            return instance.saveSlot;
         }
 
         public int[] CityPositions()
         {
-            if (instance == this)
-            {
-                return cityPositions;
-            }
-            else
-            {
-                return instance.cityPositions;
-            }
+            return instance.cityPositions;
+        }
+
+        public int Money()
+        {
+            return instance.money;
+        }
+
+        public int MissileSpeed()
+        {
+            return instance.missileSpeed;
+        }
+
+        public int MissileCount()
+        {
+            return instance.missileCount;
+        }
+
+        public float ReloadSpeed()
+        {
+            return instance.reloadSpeed;
+        }
+
+        public bool HasTargeting()
+        {
+            return instance.hasTargeting;
         }
 
         public void setSeed(int seed)
         {
-            if (instance == this)
-            {
-                roundSeed = seed;
-            }
-            else
-            {
-                instance.roundSeed = seed;
-            }
+            instance.roundSeed = seed;
+        }
+
+        public void setMoney(int m)
+        {
+            instance.money = m;
         }
 
         public void setScore(int score)
         {
-            if (instance == this)
-            {
-                this.score = score;
-            }
-            else
-            {
-                instance.score = score;
-            }
+            instance.score = score;
         }
 
         public void setCities(int[] positions) 
         {
-            if (instance == this)
-            {
-                cityPositions = positions;
-            }
-            else
-            {
-                instance.cityPositions = positions;
-            }
+            instance.cityPositions = positions;
         }
 
         public void setRoundNumber(int num)
         {
-            if (instance == this)
-            {
-                roundNumber = num;
-            }
-            else
-            {
-                instance.roundNumber = num;
-            }
+            instance.roundNumber = num;
+        }
+
+        public void enableTargeting()
+        {
+            instance.hasTargeting = true;
+        }
+
+        public void setNumMissiles(int num)
+        {
+            instance.missileCount = num;
+        }
+
+        public void setMissileSpeed(int speed)
+        {
+            instance.missileSpeed = speed;
+        }
+
+        public void setReloadSpeed(float speed)
+        {
+            instance.reloadSpeed = speed;
         }
 
         public LeaderboardEntry GetStats() 

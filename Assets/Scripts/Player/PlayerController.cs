@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public static event Action OnPlayerFire;
     public static event Action<bool> OnPlayerPause;
 
-    public int MissileSpeed { get; private set; } = 5;
+    public int MissileSpeed { get; set; } = 5;
 
     [SerializeField] private Camera cam;
     [SerializeField] private Rigidbody2D rb;
@@ -45,6 +45,11 @@ public class PlayerController : MonoBehaviour
     private void Shoot()
     {
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    }
+
+    public void UpgradeMissiles()
+    {
+        MissileSpeed++;
     }
 
     public void Fire(InputAction.CallbackContext context) 

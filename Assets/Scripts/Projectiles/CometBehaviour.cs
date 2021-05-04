@@ -83,8 +83,11 @@ public class CometBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        lr.SetPosition(0, transform.position);
-        lr.SetPosition(1, targetPos);
+        if (mGameController.AllowTargeting) 
+        {
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, targetPos);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

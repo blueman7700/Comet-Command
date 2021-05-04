@@ -105,7 +105,7 @@ MonoBehaviour:
   prefab: {fileID: 7647454117568246779}
   cometDestroyedPoints: 25
   cometDestroyedMoney: 10
-  maxSplitDelay: 10
+  maxSplitDelay: 50
   targetPrefab: {fileID: 1840654451625388073, guid: 11f6bacb2812ac4438c07417ab8eba0f, type: 3}
 --- !u!50 &2031601006133035087
 Rigidbody2D:

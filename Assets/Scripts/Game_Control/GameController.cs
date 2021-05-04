@@ -59,9 +59,11 @@ public class GameController : MonoBehaviour
     private AudioManager mAudioManager;
     private int pointsToNextCity = 10000;
     private GameObject[] cityContainers;
+    private PlayerController player;
     private MenuManager mMenuManager;
+    private bool canFire = true;
 
-    public bool AllowTargeting { get; private set; } = true;
+    public bool AllowTargeting { get; private set; } = false;
     public int Money { get; private set; }
     public int Score { get; private set; }
     public int RoundNumber { get; private set; }
@@ -91,6 +93,7 @@ public class GameController : MonoBehaviour
         mCometController = FindObjectOfType<CometControl>();
         mAudioManager = FindObjectOfType<AudioManager>();
         mMenuManager = FindObjectOfType<MenuManager>();
+        player = FindObjectOfType<PlayerController>();
 
         cityCount = FindObjectsOfType<CityBehaviour>().Length;
         cityContainers = GameObject.FindGameObjectsWithTag("CityContainer");
@@ -116,13 +119,16 @@ public class GameController : MonoBehaviour
             }
         }
 
-        //TODO: save upgrades
         MissilesRemaining = startMissileNum;
         CometsRemainingInRound = startCometNum;
 
         Score = info.Score();
         Money = info.Money();
         RoundNumber = info.RoundNumber();
+        startMissileNum = info.MissileCount();
+        player.MissileSpeed = info.MissileSpeed();
+        reloadTime = info.ReloadSpeed();
+        UpdateUI();
 
         StartRound();
     }
@@ -186,12 +192,12 @@ public class GameController : MonoBehaviour
         endOfRoundPanel.SetActive(false);
         RoundNumber++;
 
-        CometSpeed = 1f * Mathf.Pow(difficultyScalingFactor, RoundNumber);
+        CometSpeed = 0.75f * Mathf.Pow(difficultyScalingFactor, RoundNumber);
 
         CometsRemainingInRound = startCometNum;
         cometsAlive = CometsRemainingInRound;
-        MissilesRemaining = startMissileNum;
-
+        MissilesRemaining = startMissileNum - missileMagazineSize;
+        numMissilesInLauncher = missileMagazineSize;
 
         if (RoundNumber < 3)
         {
@@ -221,7 +227,6 @@ public class GameController : MonoBehaviour
 
         roundActive = true;
 
-        PlayerReload();
         OnCometSpawnRequest?.Invoke(CometsRemainingInRound);
     }
 
@@ -257,7 +262,7 @@ public class GameController : MonoBehaviour
     /// <returns></returns>
     private void PlayerCanShoot()
     {
-        if ((numMissilesInLauncher > 0) && roundActive)
+        if ((numMissilesInLauncher > 0) && roundActive && canFire)
         {
             OnFireAllowed?.Invoke();
             HandlePlayerShot();
@@ -312,6 +317,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void PlayerReload()
     {
+        Debug.Log("Reload called");
         if (MissilesRemaining < missileMagazineSize)
         {
             numMissilesInLauncher = MissilesRemaining;
@@ -321,7 +327,8 @@ public class GameController : MonoBehaviour
             numMissilesInLauncher = missileMagazineSize;
             MissilesRemaining -= missileMagazineSize;
         }
-        UpdateUI();
+        canFire = false;
+        StartCoroutine(Reload());
     }
 
     /// <summary>
@@ -409,17 +416,44 @@ public class GameController : MonoBehaviour
             case Upgrades.FasterReload:
                 if (reloadTime > 0.5f)
                 {
-                    reloadTime -= 0.5f;
+                    if (Money >= 50)
+                    {
+                        reloadTime -= 0.1f;
+                        Money -= 50;
+                        Debug.Log(reloadTime);
+                    }
                 }
                 break;
             case Upgrades.MoreMissilesInStockpile:
-                startMissileNum += 5;
+                if (Money >= 100)
+                {
+                    startMissileNum += 5;
+                    Money -= 100;
+                    Debug.Log(startMissileNum);
+                }
                 break;
             case Upgrades.CometPrediction:
-                AllowTargeting = true;
+                if (Money >= 500)
+                {
+                    AllowTargeting = true;
+                    Money -= 500;
+                    Debug.Log("algos");
+                }
                 break;
             case Upgrades.CityRebuild:
-                TryRebuildCity();
+                if (Money >= 1000 && TryRebuildCity())
+                {
+                    Money -= 1000;
+                    Debug.Log("newCity");
+                }
+                break;
+            case Upgrades.FasterMissiles:
+                if (Money >= 100)
+                {
+                    Money -= 100;
+                    player.UpgradeMissiles();
+                    Debug.Log(player.MissileSpeed);
+                }
                 break;
         }
     }
@@ -456,6 +490,7 @@ public class GameController : MonoBehaviour
     private IEnumerator EndOFRound()
     {
         yield return new WaitForSeconds(1);
+        UpdateUI();
         int numCitiesAlive = FindObjectsOfType<CityBehaviour>().Length;
         int missileBonus = (MissilesRemaining + numMissilesInLauncher) * REMAINING_MISSILES_BONUS;
         int cityBonus = numCitiesAlive * REMAINING_CITIES_BONUS;
@@ -476,5 +511,14 @@ public class GameController : MonoBehaviour
 
 
         endOfRoundPanel.SetActive(true);
+    }
+
+    private IEnumerator Reload()
+    {
+        Debug.Log("Reloading");
+        yield return new WaitForSeconds(reloadTime);
+        canFire = true;
+        Debug.Log("Finished");
+        UpdateUI();
     }
 }

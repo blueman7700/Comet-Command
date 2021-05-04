@@ -51,6 +51,11 @@ namespace Assets.Scripts.Structs
             money = 0;
             cityPositions = new int[] { 0, 1, 2, 3, 4, 5};
             roundSeed = UnityEngine.Random.Range(1000, 10000);
+
+            missileSpeed = 7;
+            missileCount = 30;
+            reloadSpeed = 2;
+            hasTargeting = false;
         }
 
         public string Username()

@@ -9,9 +9,11 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject leaderboardPanel;
     [SerializeField] private GameObject savesPanel;
+    [SerializeField] private GameObject creditPanel;
     [SerializeField] private TextMeshProUGUI[] scores;
     [SerializeField] private TextMeshProUGUI[] names;
     [SerializeField] private TextMeshProUGUI gameOverScore;
+    [SerializeField] private Fade fader;
 
     [SerializeField] private TextMeshProUGUI slot1Name;
     [SerializeField] private TextMeshProUGUI slot1Score;
@@ -65,12 +67,17 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("GamePlayer");
+        fader.loadScene("GamePlayer");
     }
 
     public void MainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        fader.loadScene("MainMenu");
+    }
+
+    public void Tutorial()
+    {
+        fader.loadScene("Tutorial");
     }
 
     public void Leaderboard()
@@ -79,9 +86,9 @@ public class MenuManager : MonoBehaviour
         leaderboardPanel.SetActive(true);
     }
 
-    public void Options()
-    { 
-        
+    public void Credits()
+    {
+        creditPanel.SetActive(true);
     }
 
     public void Saves()

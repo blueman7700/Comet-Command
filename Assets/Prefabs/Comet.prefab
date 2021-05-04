@@ -101,7 +101,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprites: []
   explosionAnim: {fileID: 5498317046901316375, guid: b509be080cd83974a8e343a850b2d163, type: 3}
+  prefab: {fileID: 7647454117568246779}
   cometDestroyedPoints: 25
+  maxSplitDelay: 10
 --- !u!50 &2031601006133035087
 Rigidbody2D:
   serializedVersion: 4

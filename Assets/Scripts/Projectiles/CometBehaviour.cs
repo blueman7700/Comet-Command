@@ -9,7 +9,9 @@ public class CometBehaviour : MonoBehaviour
 
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private GameObject explosionAnim;
+    [SerializeField] private GameObject prefab;
     [SerializeField] private int cometDestroyedPoints = 25;
+    [SerializeField] private float maxSplitDelay;
 
     private GameObject[] targets;
     private Vector2 targetPos;
@@ -29,8 +31,6 @@ public class CometBehaviour : MonoBehaviour
         bool flipX = (Random.value > 0.5f);
         bool flipY = (Random.value > 0.5f);
 
-        //Debug.Log(textureIndex);
-
         SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
         sr.sprite = sprites[textureIndex];
         sr.flipX = flipX;
@@ -40,6 +40,11 @@ public class CometBehaviour : MonoBehaviour
         int targetIndex = Random.Range(0, targets.Length);
         targetPos = targets[targetIndex].transform.position;
         speed = mGameController.CometSpeed;
+
+        float timer = Random.Range(0.1f, maxSplitDelay);
+        timer /= speed;
+        Invoke("Split", timer);
+
     }
 
     private void Update()
@@ -64,13 +69,11 @@ public class CometBehaviour : MonoBehaviour
             }
 
             mGameController.CityDestroyed();
-            //TODO: switch this over to something better in the future...
             Destroy(collision.gameObject);
         }
         else if (collision.tag == "Explosion")
         {
             mGameController.AddScorePoints(cometDestroyedPoints);
-            
             Explode();
         }
     }
@@ -80,5 +83,16 @@ public class CometBehaviour : MonoBehaviour
         mGameController.HandleCometDestroyed();
         Instantiate(explosionAnim, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
+    }
+
+    private void Split()
+    {
+        float minSplitHeight = Camera.main.ViewportToWorldPoint(new Vector3(0, 0.5f, 0)).y;
+
+        if (minSplitHeight > transform.position.y)
+        {
+            Instantiate(prefab, transform.position, Quaternion.identity);
+            mGameController.HandleCometSplit(1);
+        }
     }
 }

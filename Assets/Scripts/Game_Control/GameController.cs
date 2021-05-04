@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private GameObject endOfRoundPanel;
+    [SerializeField] private GameObject cityPrefab;
     [SerializeField] private Texture2D cursor;
     [SerializeField] private int startMissileNum;
     [SerializeField] private int startCometNum;
@@ -46,6 +47,8 @@ public class GameController : MonoBehaviour
     private int cityCount;
     private int bonusMultiplier;
     private AudioManager mAudioManager;
+    private int pointsToNextCity = 10000;
+    private GameObject[] cityContainers;
 
     public int Score { get; private set; }
     public int RoundNumber { get; private set; }
@@ -72,6 +75,8 @@ public class GameController : MonoBehaviour
         Score = 0;
         RoundNumber = 0;
         CometSpeed = 1f;
+
+        cityContainers = GameObject.FindGameObjectsWithTag("CityContainer");
 
         StartRound();
     }
@@ -166,7 +171,6 @@ public class GameController : MonoBehaviour
     public void HandleCometSpawn()
     {
         CometsRemainingInRound--;
-        UpdateUI();
     }
 
     /// <summary>
@@ -175,6 +179,12 @@ public class GameController : MonoBehaviour
     public void HandleCometDestroyed()
     {
         cometsAlive--;
+        UpdateUI();
+    }
+
+    public void HandleCometSplit(int numNewComets)
+    {
+        cometsAlive += numNewComets;
     }
 
     /// <summary>
@@ -282,9 +292,8 @@ public class GameController : MonoBehaviour
     public IEnumerator EndOFRound()
     {
         yield return new WaitForSeconds(1);
-        endOfRoundPanel.SetActive(true);
         int numCitiesAlive = FindObjectsOfType<CityBehaviour>().Length;
-        int missileBonus = MissilesRemaining * REMAINING_MISSILES_BONUS;
+        int missileBonus = (MissilesRemaining + numMissilesInLauncher) * REMAINING_MISSILES_BONUS;
         int cityBonus = numCitiesAlive * REMAINING_CITIES_BONUS;
         int totalBonus = missileBonus + cityBonus;
 
@@ -297,5 +306,28 @@ public class GameController : MonoBehaviour
         mBonusMult.text = "x" + bonusMultiplier;
         mTotalBonus.text = totalBonus.ToString();
         mTotalScore.text = Score.ToString();
+
+        if (Score > pointsToNextCity)
+        {
+
+            bool cityCreated = false;
+            int i = 0;
+            GameObject go;
+
+            while (i < cityContainers.Length && !cityCreated)
+            {
+                go = cityContainers[i];
+                if (go.GetComponentInChildren<CityBehaviour>() == null && cityCreated == false)
+                {
+                    Instantiate(cityPrefab, go.transform.position, Quaternion.identity, go.transform);
+                    pointsToNextCity += 10000;
+                    cityCreated = true;
+                }
+                i++;
+            }
+        }
+
+
+        endOfRoundPanel.SetActive(true);
     }
 }

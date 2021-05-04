@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Building
   - Explosion
+  - CityContainer
   layers:
   - Default
   - TransparentFX

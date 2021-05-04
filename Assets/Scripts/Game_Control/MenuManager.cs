@@ -8,12 +8,28 @@ using Assets.Scripts.Structs;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject leaderboardPanel;
+    [SerializeField] private GameObject savesPanel;
     [SerializeField] private TextMeshProUGUI[] scores;
     [SerializeField] private TextMeshProUGUI[] names;
-    [SerializeField] private GameInfo info;
+
+    [SerializeField] private TextMeshProUGUI slot1Name;
+    [SerializeField] private TextMeshProUGUI slot1Score;
+    [SerializeField] private TextMeshProUGUI slot1Round;
+
+    [SerializeField] private TextMeshProUGUI slot2Name;
+    [SerializeField] private TextMeshProUGUI slot2Score;
+    [SerializeField] private TextMeshProUGUI slot2Round;
+
+    [SerializeField] private TextMeshProUGUI slot3Name;
+    [SerializeField] private TextMeshProUGUI slot3Score;
+    [SerializeField] private TextMeshProUGUI slot3Round;
+
+    private static string ROUND_TEXT = "Round: {0}";
+    private static string SCORE_TEXT = "Score: {0}";
 
     private List<LeaderboardEntry> entries;
     private static MenuManager instance;
+    private GameInfo info = new GameInfo();
 
     private void Awake()
     {
@@ -59,6 +75,100 @@ public class MenuManager : MonoBehaviour
     public void Options()
     { 
         
+    }
+
+    public void Saves()
+    {
+
+        //set up slot 1
+        info = FileManager.LoadGame(1);
+        if (info != null)
+        {
+            slot1Name.text = info.Username();
+            slot1Round.text = string.Format(ROUND_TEXT, info.RoundNumber());
+            slot1Score.text = string.Format(SCORE_TEXT, info.Score());
+        }
+        else 
+        {
+            slot1Name.text = "Empty";
+            slot1Round.text = string.Format(ROUND_TEXT, 0);
+            slot1Score.text = string.Format(SCORE_TEXT, 0);
+        }
+
+        //set up slot 2
+        info = FileManager.LoadGame(2);
+        if (info != null)
+        {
+            slot2Name.text = info.Username();
+            slot2Round.text = string.Format(ROUND_TEXT, info.RoundNumber());
+            slot2Score.text = string.Format(SCORE_TEXT, info.Score());
+        }
+        else
+        {
+            slot2Name.text = "Empty";
+            slot2Round.text = string.Format(ROUND_TEXT, 0);
+            slot2Score.text = string.Format(SCORE_TEXT, 0);
+        }
+
+        //set up slot 3
+        info = FileManager.LoadGame(2);
+        if (info != null)
+        {
+            slot3Name.text = info.Username();
+            slot3Round.text = string.Format(ROUND_TEXT, info.RoundNumber());
+            slot3Score.text = string.Format(SCORE_TEXT, info.Score());
+        }
+        else
+        {
+            slot3Name.text = "Empty";
+            slot3Round.text = string.Format(ROUND_TEXT, 0);
+            slot3Score.text = string.Format(SCORE_TEXT, 0);
+        }
+
+
+        savesPanel.SetActive(true);
+    }
+
+    public void LoadSlot1()
+    {
+        info = FileManager.LoadGame(1);
+        if (info == null)
+        {
+            info = new GameInfo("test1", 1, true);
+        }
+        else 
+        {
+            info.UpdateActiveInfo();
+        }
+        StartGame();
+    }
+
+    public void LoadSlot2()
+    {
+        info = FileManager.LoadGame(2);
+        if (info == null)
+        {
+            info = new GameInfo("test2", 2, true);
+        }
+        else
+        {
+            info.UpdateActiveInfo();
+        }
+        StartGame();
+    }
+
+    public void LoadSlot3()
+    {
+        info = FileManager.LoadGame(3);
+        if (info == null)
+        {
+            info = new GameInfo("test3", 3, true);
+        }
+        else
+        {
+            info.UpdateActiveInfo();
+        }
+        StartGame();
     }
 
     public void Exit()

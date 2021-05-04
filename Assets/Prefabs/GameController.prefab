@@ -44,15 +44,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endOfRoundPanel: {fileID: 0}
+  cityPrefab: {fileID: 4886890714550750053, guid: 71270b304214ad648a7c9ed889577838, type: 3}
   cursor: {fileID: 2800000, guid: 1a8497de932060b4e9c9f76220f9c76f, type: 3}
   startMissileNum: 30
   startCometNum: 20
   difficultyScalingFactor: 1.25
+  info: {fileID: 11400000, guid: 3c7060d8bf4fb8741b80584c6b1f002b, type: 2}
   mScoreText: {fileID: 0}
   mRoundText: {fileID: 0}
   mCometText: {fileID: 0}
   mMissileText: {fileID: 0}
+  mStockpileText: {fileID: 0}
   mCityBonus: {fileID: 0}
   mMissileBonus: {fileID: 0}
   mTotalBonus: {fileID: 0}
   mTotalScore: {fileID: 0}
+  mBonusMult: {fileID: 0}

@@ -9,9 +9,9 @@ public static class FileManager
 {
 
     private static string SAVE_PATH = Application.persistentDataPath + "/data.dat";
-    private static string SAVE_SLOT_1_PATH = Application.persistentDataPath + "/saves/slot1.dat";
-    private static string SAVE_SLOT_2_PATH = Application.persistentDataPath + "/saves/slot2.dat";
-    private static string SAVE_SLOT_3_PATH = Application.persistentDataPath + "/saves/slot3.dat";
+    private static string SAVE_SLOT_1_PATH = Application.persistentDataPath + "/slot1.dat";
+    private static string SAVE_SLOT_2_PATH = Application.persistentDataPath + "/slot2.dat";
+    private static string SAVE_SLOT_3_PATH = Application.persistentDataPath + "/slot3.dat";
 
     public static void SaveLeaderboard(List<LeaderboardEntry> entries)
     {
@@ -24,10 +24,10 @@ public static class FileManager
         fs.Close();
     }
 
-    public static void SaveInfoToSlot(int slotNum) 
+    public static void SaveInfoToSlot(GameInfo info) 
     {
         string pathToUse;
-        switch (slotNum)
+        switch (info.SaveSlot())
         {
             case 1:
                 pathToUse = SAVE_SLOT_1_PATH;
@@ -46,6 +46,8 @@ public static class FileManager
         BinaryFormatter mFormatter = new BinaryFormatter();
 
         FileStream fs = new FileStream(pathToUse, FileMode.Create);
+        mFormatter.Serialize(fs, info.GetInstance());
+        fs.Close();
 
     }
 
@@ -73,6 +75,7 @@ public static class FileManager
             FileStream fs = new FileStream(pathToUse, FileMode.Open);
 
             GameInfo info = mFormatter.Deserialize(fs) as GameInfo;
+            info.UpdateActiveInfo();
             fs.Close();
             return info;
         }
@@ -98,5 +101,21 @@ public static class FileManager
             Debug.LogError("Save File Not Found!");
             return null;
         }
+    }
+
+    public static void AddEntryToLeaderboard(LeaderboardEntry e) 
+    {
+        List<LeaderboardEntry> entries = LoadLeaderboard();
+        if (entries != null)
+        {
+            entries.Add(e);
+        }
+        else
+        {
+            entries = new List<LeaderboardEntry>();
+            entries.Add(e);
+        }
+
+        SaveLeaderboard(entries);
     }
 }

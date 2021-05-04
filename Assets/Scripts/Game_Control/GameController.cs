@@ -73,14 +73,37 @@ public class GameController : MonoBehaviour
         mMenuManager = FindObjectOfType<MenuManager>();
 
         cityCount = FindObjectsOfType<CityBehaviour>().Length;
+        cityContainers = GameObject.FindGameObjectsWithTag("CityContainer");
 
+        //make sure all cities are in the correct state.
+        bool cityExists;
+        for (int i = 0; i < cityContainers.Length; i++)
+        {
+            cityExists = false;
+            GameObject city = cityContainers[i].GetComponentInChildren<CityBehaviour>().gameObject;
+            for (int j = 0; j < info.CityPositions().Length; j++)
+            {
+                if (i == info.CityPositions()[j])
+                {
+                    cityExists = true;
+                }
+            }
+
+            if (!cityExists)
+            {
+                Destroy(city);
+                CityDestroyed();
+            }
+        }
+        
+        //TODO: save upgrades
         MissilesRemaining = startMissileNum;
         CometsRemainingInRound = startCometNum;
-        Score = 0;
-        RoundNumber = 0;
-        CometSpeed = 1f;
 
-        cityContainers = GameObject.FindGameObjectsWithTag("CityContainer");
+        Score = info.Score();
+        RoundNumber = info.RoundNumber();
+        
+        
 
         StartRound();
     }
@@ -99,6 +122,7 @@ public class GameController : MonoBehaviour
         }
         else if (cityCount <= 0 || playerIsDead)
         {
+            FileManager.AddEntryToLeaderboard(info.GetStats());
             SceneManager.LoadScene("GameOver");
         }
     }
@@ -120,12 +144,14 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void StartRound()
     {
-
-        int seed = Random.Range(1111, 10000);
+        int seed = Random.Range(1000, 10000);
         Random.InitState(seed);
+        info.setSeed(seed);
 
         endOfRoundPanel.SetActive(false);
         RoundNumber++;
+
+        CometSpeed = 1f * Mathf.Pow(difficultyScalingFactor, RoundNumber);
 
         CometsRemainingInRound = startCometNum;
         cometsAlive = CometsRemainingInRound;
@@ -288,7 +314,6 @@ public class GameController : MonoBehaviour
         endOfRoundPanel.SetActive(false);
 
         //calculate new round settings
-        CometSpeed *= difficultyScalingFactor;
         if (RoundNumber % 5 == 0)
         {
             //every 5 rounds the number of comets increases.
@@ -296,6 +321,26 @@ public class GameController : MonoBehaviour
         }
 
         StartRound();
+    }
+
+    public void SaveClick()
+    {
+        //get all active city positions
+        List<int> cityIndicies = new List<int>();
+        GameObject go;
+        for (int i = 0; i < cityContainers.Length; i++)
+        {
+            go = cityContainers[i];
+            if (go.GetComponentInChildren<CityBehaviour>() != null)
+            {
+                cityIndicies.Add(i);
+            }
+        }
+
+        info.setCities(cityIndicies.ToArray());
+        info.setScore(Score);
+        info.setRoundNumber(RoundNumber);
+        FileManager.SaveInfoToSlot(info);
     }
 
     /// <summary>

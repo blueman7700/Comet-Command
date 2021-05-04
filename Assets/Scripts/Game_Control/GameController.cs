@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Structs;
 
 /// <summary>
 /// 
@@ -16,6 +17,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private int startMissileNum;
     [SerializeField] private int startCometNum;
     [SerializeField] private float difficultyScalingFactor;
+    [SerializeField] private GameInfo info;
 
     [SerializeField] private TextMeshProUGUI mScoreText;
     [SerializeField] private TextMeshProUGUI mRoundText;
@@ -49,6 +51,7 @@ public class GameController : MonoBehaviour
     private AudioManager mAudioManager;
     private int pointsToNextCity = 10000;
     private GameObject[] cityContainers;
+    private MenuManager mMenuManager;
 
     public int Score { get; private set; }
     public int RoundNumber { get; private set; }
@@ -67,6 +70,7 @@ public class GameController : MonoBehaviour
 
         mCometController = FindObjectOfType<CometControl>();
         mAudioManager = FindObjectOfType<AudioManager>();
+        mMenuManager = FindObjectOfType<MenuManager>();
 
         cityCount = FindObjectsOfType<CityBehaviour>().Length;
 
@@ -116,6 +120,10 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void StartRound()
     {
+
+        int seed = Random.Range(1111, 10000);
+        Random.InitState(seed);
+
         endOfRoundPanel.SetActive(false);
         RoundNumber++;
 
@@ -278,9 +286,14 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Click!");
         endOfRoundPanel.SetActive(false);
-        //TODO: calculate new round params
 
+        //calculate new round settings
         CometSpeed *= difficultyScalingFactor;
+        if (RoundNumber % 5 == 0)
+        {
+            //every 5 rounds the number of comets increases.
+            startCometNum += 5;
+        }
 
         StartRound();
     }

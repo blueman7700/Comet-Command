@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Structs
 {
-    class LeaderboardEntry
+    [Serializable]
+    public class LeaderboardEntry
     {
         public LeaderboardEntry(string name, int score)
         {
@@ -16,6 +17,6 @@ namespace Assets.Scripts.Structs
 
         public string Name { get; private set; }
 
-        public int Score { get; private set; }
+        public int Score { get; set; }
     }
 }

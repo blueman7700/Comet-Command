@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private int startCometNum;
     [SerializeField] private float difficultyScalingFactor;
     [SerializeField] private GameInfo info;
+    [SerializeField] private GameObject mPauseText;
+    [SerializeField] private Fade fade;
 
     [SerializeField] private TextMeshProUGUI mScoreText;
     [SerializeField] private TextMeshProUGUI mMoneyText;
@@ -30,6 +32,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI mCometText;
     [SerializeField] private TextMeshProUGUI mMissileText;
     [SerializeField] private TextMeshProUGUI mStockpileText;
+    
 
     [SerializeField] private TextMeshProUGUI mCityBonus;
     [SerializeField] private TextMeshProUGUI mMissileBonus;
@@ -386,9 +389,12 @@ public class GameController : MonoBehaviour
             info.enableTargeting();
         }
         info.setReloadSpeed(reloadTime);
+        info.setMissileSpeed(player.MissileSpeed);
 
 
-        FileManager.SaveInfoToSlot(info);
+        FileManager.SaveInfoToSlot(info.GetInstance());
+        fade.loadScene("MainMenu");
+
     }
 
     /// <summary>
@@ -400,11 +406,13 @@ public class GameController : MonoBehaviour
         if (pauseState)
         {
             Time.timeScale = 0f;
+            mPauseText.SetActive(true);
             //show pause menu
         }
         else
         {
             Time.timeScale = 1f;
+            mPauseText.SetActive(false);
             //hide pause menu
         }
     }

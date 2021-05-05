@@ -131,6 +131,7 @@ public class GameController : MonoBehaviour
         startMissileNum = info.MissileCount();
         player.MissileSpeed = info.MissileSpeed();
         reloadTime = info.ReloadSpeed();
+        AllowTargeting = info.HasTargeting();
         UpdateUI();
 
         StartRound();
@@ -164,7 +165,7 @@ public class GameController : MonoBehaviour
         else if (cityCount <= 0 || playerIsDead)
         {
             info.setScore(Score);
-            FileManager.AddEntryToLeaderboard(info.GetStats());
+            FileManager.AddEntryToLeaderboard(info.GetInstance().GetStats());
             OnGameEnd?.Invoke(Score);
             SceneManager.LoadScene("GameOver");
         }

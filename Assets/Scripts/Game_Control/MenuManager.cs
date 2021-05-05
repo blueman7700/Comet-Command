@@ -148,7 +148,7 @@ public class MenuManager : MonoBehaviour
         info = FileManager.LoadGame(1);
         if (info == null)
         {
-            info = new GameInfo("test1", 1, true);
+            info = new GameInfo("Slot1", 1, true);
         }
         else 
         {
@@ -162,7 +162,7 @@ public class MenuManager : MonoBehaviour
         info = FileManager.LoadGame(2);
         if (info == null)
         {
-            info = new GameInfo("test2", 2, true);
+            info = new GameInfo("Slot2", 2, true);
         }
         else
         {
@@ -176,7 +176,7 @@ public class MenuManager : MonoBehaviour
         info = FileManager.LoadGame(3);
         if (info == null)
         {
-            info = new GameInfo("test3", 3, true);
+            info = new GameInfo("Slot3", 3, true);
         }
         else
         {
